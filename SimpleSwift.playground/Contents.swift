@@ -1,11 +1,64 @@
+import Foundation
 print("Welcome to the UW Calculator Playground")
 
 func calculate(_ args: [String]) -> Int {
-    return -1
+    switch args.last {
+    case "count" : return count(args)
+    case "avg" : return average(args)
+    case "fact" : return factorial(args)
+    default: return directCalculation(args)
+    }
 }
 
 func calculate(_ arg: String) -> Int {
-    return -1
+    calculate(arg.components(separatedBy: " "))
+}
+
+func count(_ args: [String]) -> Int {
+    var count = 0
+    for arg in args {
+        if (arg != "count") {
+            count += 1
+        }
+    }
+    return count
+}
+
+func average(_ args: [String]) -> Int {
+    var sum = 0
+    var number = 0
+    for arg in args {
+        if arg != "avg" {
+            sum += (Int(arg) ?? 0)
+            number += 1
+        }
+    }
+    if (number == 0) { return 0 }
+    else { return sum / number }
+}
+
+func factorial(_ args: [String]) -> Int {
+    switch args[0] {
+    case "fact": return 0
+    case "0": return 1
+    default:
+        var result = 1
+        for i in 1...(Int(args[0]) ?? 0) {
+            result *= i
+        }
+        return result
+    }
+}
+
+func directCalculation(_ args: [String]) -> Int {
+    switch args[1] {
+    case "+": return (Int(args[0]) ?? 0) + (Int(args[2]) ?? 0)
+    case "-": return (Int(args[0]) ?? 0) - (Int(args[2]) ?? 0)
+    case "*": return (Int(args[0]) ?? 0) * (Int(args[2]) ?? 0)
+    case "/": return (Int(args[0]) ?? 0) / (Int(args[2]) ?? 0)
+    case "%": return (Int(args[0]) ?? 0) % (Int(args[2]) ?? 0)
+    default: return 0
+    }
 }
 
 // -------------------------------------------
@@ -53,7 +106,7 @@ calculate("5 fact") == 120
 
 // Implement calculate([String]) and calculate(String)
 // to handle negative numbers
-/*
+
 calculate(["2", "+", "-2"]) == 0
 calculate(["2", "-", "-2"]) == 4
 calculate(["2", "*", "-2"]) == -4
@@ -68,16 +121,30 @@ calculate("2 - -2") == 4
 calculate("-2 / 2") == -1
 
 calculate("1 -2 3 -4 5 count") == 5
-*/
+
  
 // Implement calculate([String]) and calculate(String)
 // to use floating-point values
-/*
+
 func calculate(_ args: [String]) -> Double {
-    return -1.0
+    switch args.last {
+    case "count": return Double(count(args))
+    default: return doubleCalculation(args)
+    }
 }
 func calculate(_ arg: String) -> Double {
-    return -1.0
+    calculate(arg.components(separatedBy: " "))
+}
+
+func doubleCalculation(_ args: [String]) -> Double {
+    switch args[1] {
+    case "+": return (Double(args[0]) ?? 0.0) + (Double(args[2]) ?? 0.0)
+    case "-": return (Double(args[0]) ?? 0.0) - (Double(args[2]) ?? 0.0)
+    case "*": return (Double(args[0]) ?? 0.0) * (Double(args[2]) ?? 0.0)
+    case "/": return (Double(args[0]) ?? 0.0) / (Double(args[2]) ?? 0.0)
+    case "%": return (Double(args[0]) ?? 0.0).truncatingRemainder(dividingBy: (Double(args[2]) ?? 0.0))
+    default: return 0
+    }
 }
 
 calculate(["2.0", "+", "2.0"]) == 4.0
@@ -87,4 +154,4 @@ calculate(["2.5", "*", "2.5"]) == 6.25
 calculate(["2.0", "/", "2.0"]) == 1.0
 calculate(["2.0", "%", "2.0"]) == 0.0
 calculate("1.0 2.0 3.0 4.0 5.0 count") == 5.0
-*/
+
